@@ -1,10 +1,10 @@
-package com.mark.blackhole;
+package com.mark.web.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BlackholeApplicationTests {
+class WebApplicationTests {
 
     @Test
     void contextLoads() {
