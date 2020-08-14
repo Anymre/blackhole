@@ -1,23 +1,45 @@
+buildscript {
+    ext {
+        bootVersion = '2.3.2.RELEASE'
+    }
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${bootVersion}")
+    }
+}
 plugins {
     id 'org.springframework.boot' version '2.3.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
 }
 
-group = 'com.mark'
-version = '1.0.0'
-sourceCompatibility = '1.8'
-
-jar{enabled=false}
-
 allprojects {
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-
+    group = 'com.mark'
     version = '1.0.0'
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:${bootVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:Finchley.SR2"
+            mavenBom 'org.projectlombok:lombok:1.18.8'
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
     repositories { maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' } }
-    bootJar { enabled = false }
+
+    ext {
+        springBootVersion = "2.3.2.RELEASE"
+    }
+    jar.enabled = true
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -25,9 +47,5 @@ allprojects {
         }
     }
 }
-
-
-test {
-    useJUnitPlatform()
-}
-
+jar.enabled = false
+repositories { maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' } }

@@ -1,4 +1,4 @@
-package com.mark.web.web;
+package com.mark.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
