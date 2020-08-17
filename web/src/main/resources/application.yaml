@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://server.anymre.top:8926/flight?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Hongkong&allowMultiQueries=true
+  jpa:
+    hibernate:
+      ddl-auto: none

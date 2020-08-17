@@ -1,2 +1,3 @@
 rootProject.name = 'com.mark.blackhole'
 include 'web'
+include 'service'

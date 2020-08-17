@@ -1,4 +1,12 @@
-bootJar.enabled = true
+bootJar {
+    enabled = true
+    mainClassName = "com.mark.web.WebApplication"
+}
+
+
+dependencies {
+    compile project (":service")
+}
 
 test {
     useJUnitPlatform()
