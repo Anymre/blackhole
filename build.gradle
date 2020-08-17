@@ -1,12 +1,14 @@
 buildscript {
     ext {
         bootVersion = '2.3.2.RELEASE'
+        dependencyVersion = '1.0.9.RELEASE'
     }
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${bootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyVersion}"
     }
 }
 plugins {
@@ -23,8 +25,6 @@ allprojects {
     dependencyManagement {
         imports {
             mavenBom "org.springframework.boot:spring-boot-starter-parent:${bootVersion}"
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:Finchley.SR2"
-            mavenBom 'org.projectlombok:lombok:1.18.8'
         }
     }
 }
@@ -36,16 +36,15 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     repositories { maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' } }
 
-    ext {
-        springBootVersion = "2.3.2.RELEASE"
-    }
     jar.enabled = true
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
         testImplementation('org.springframework.boot:spring-boot-starter-test') {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
     }
 }
 jar.enabled = false
+
 repositories { maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' } }

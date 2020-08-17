@@ -1,7 +1,5 @@
-//archivesBaseName = 'web'
-//bootJar.enabled = true
-//
-//
-//test {
-//    useJUnitPlatform()
-//}
+bootJar.enabled = true
+
+test {
+    useJUnitPlatform()
+}
