@@ -1,6 +1,6 @@
-package com.mark.web;
+package com.mark.web.controller;
 
-import com.mark.service.BackService;
+import com.mark.web.service.BackService;
 import com.mark.service.entity.BackEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class WebController {
 
 
     @GetMapping
-    public BackEntity getOne(){
+    public BackEntity getOne() {
         return backService.getOne();
     }
 }

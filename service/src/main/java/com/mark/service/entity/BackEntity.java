@@ -1,9 +1,6 @@
 package com.mark.service.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -11,8 +8,11 @@ import java.util.Objects;
  * @author Marcus lv
  * @date 2020/8/13 14:29
  */
-@Table(name = "back", schema = "flight", catalog = "")
+@Entity
+@Table(name = "back")
 public class BackEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private Timestamp date;
     private Timestamp now;

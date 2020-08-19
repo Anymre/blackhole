@@ -1,9 +1,12 @@
-package com.mark.service;
+package com.mark.web.service.impl;
 
 import com.mark.service.entity.BackEntity;
 import com.mark.service.repository.BackRepository;
+import com.mark.web.service.BackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author Marcus lv
@@ -11,7 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BackServiceImpl implements BackService {
-    @Autowired
+    @Resource
     private BackRepository backRepository;
 
     @Override
