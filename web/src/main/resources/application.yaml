@@ -1,8 +1,25 @@
 spring:
-  datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://server.anymre.top:8926/flight?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Hongkong&allowMultiQueries=true
+  shardingsphere:
+    props:
+      sql:
+        show: true
+    datasource:
+      names: foo
+      foo:
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
+        password: 123456
+        jdbcUrl: jdbc:mysql://server.anymre.top:8926/foo?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Hongkong&allowMultiQueries=true
+    sharding:
+      default-data-source-name: foo
+      binding-tables: s
+      tables:
+        s:
+          actual-data-nodes: foo.s$->{0..1}
+          table-strategy:
+            inline:
+              sharding-column: id
+              algorithm-expression: s$->{id % 2}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
