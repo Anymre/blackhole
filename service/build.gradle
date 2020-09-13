@@ -1,8 +1,0 @@
-archivesBaseName = 'service'
-jar {
-    enabled = true
-}
-
-dependencies {
-    implementation "org.apache.shardingsphere:sharding-jdbc-spring-boot-starter:4.1.0"
-}
