@@ -16,6 +16,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static com.example.raft.RaftPeer.TICK_PERIOD_MS;
+
 /**
  * @author Marcus lv
  * @date 2020/9/27 15:07
@@ -46,8 +48,8 @@ public class RaftCore {
     public void init() {
         LOG.info("initializing Raft sub-system");
         
-        executor.scheduleAtFixedRate(new MasterElection(), 0, 500, TimeUnit.MILLISECONDS);
-        executor.scheduleAtFixedRate(new MasterElection(), 0, 500, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(new MasterElection(), 0, TICK_PERIOD_MS, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(new HeartBeat(), 0, 500, TimeUnit.MILLISECONDS);
         
         LOG.info("initializing finished");
     }
@@ -77,6 +79,31 @@ public class RaftCore {
         return local;
     }
     
+    public RaftPeer receivedBeat(RaftPeer remote) {
+        RaftPeer local = peers.local();
+        if (remote.state != RaftPeer.State.LEADER) {
+            LOG.error("[RAFT] invalid state from master, state: {}, remote peer: {}", remote.state, remote.toString());
+            throw new IllegalArgumentException("invalid state from master, state: " + remote.state);
+        }
+        
+        if (local.term.get() > remote.term.get()) {
+            LOG.error(
+                    "[RAFT] out of date beat, beat-from-term: {}, beat-to-term: {}, remote peer: {}, and leaderDueMs: {}",
+                    remote.term.get(), local.term.get(), remote.toString(), local.leaderDueMs);
+            throw new IllegalArgumentException(
+                    "out of date beat, beat-from-term: " + remote.term.get() + ", beat-to-term: " + local.term.get());
+        }
+        
+        if (local.state != RaftPeer.State.FOLLOWER) {
+            local.state = RaftPeer.State.FOLLOWER;
+            local.voteFor = remote.ip;
+        }
+        local.resetLeaderDue();
+        local.resetHeartbeatDue();
+        
+        return local;
+    }
+    
     public class MasterElection implements Runnable {
         
         @Override
@@ -86,7 +113,7 @@ public class RaftCore {
                     return;
                 }
                 RaftPeer local = peers.local();
-                local.leaderDueMs -= RaftPeer.TICK_PERIOD_MS;
+                local.leaderDueMs -= TICK_PERIOD_MS;
                 
                 if (local.leaderDueMs > 0) {
                     return;
@@ -113,15 +140,56 @@ public class RaftCore {
         Map<String, String> params = new HashMap<>(1);
         params.put("vote", objectMapper.writeValueAsString(local));
         
-        for (String sever : peers.allServersWithoutMySelf()) {
-            String url = "http://" + sever + "/raft/vote";
+        for (String server : peers.allServersWithoutMySelf()) {
+            String url = "http://" + server + "/raft/vote";
             try {
                 RaftPeer peer = restTemplate.postForObject(url, local, RaftPeer.class);
                 LOG.info("received approve from peer: {}", objectMapper.writeValueAsString(peer));
                 
                 peers.decideLeader(peer);
             } catch (Exception ignore) {
-                LOG.error("error while sending vote to server: {}", sever);
+                LOG.error("error while sending vote to server: {}", server);
+            }
+        }
+    }
+    
+    public class HeartBeat implements Runnable {
+        
+        @Override
+        public void run() {
+            try {
+                if (!peers.isReady()) {
+                    return;
+                }
+                RaftPeer local = peers.local();
+                local.heartbeatDueMs -= TICK_PERIOD_MS;
+                
+                if (local.heartbeatDueMs > 0) {
+                    return;
+                }
+                local.resetHeartbeatDue();
+                sendBeat();
+            } catch (Exception ignore) {
+            }
+        }
+    }
+    
+    private void sendBeat() {
+        RaftPeer local = peers.local();
+        
+        if (local.state != RaftPeer.State.LEADER) {
+            return;
+        }
+        local.resetLeaderDue();
+        
+        for (String server : peers.allServersWithoutMySelf()) {
+            String url = "http://" + server + "/raft/beat";
+            try {
+                RaftPeer peer = restTemplate.postForObject(url, local, RaftPeer.class);
+                LOG.info("send beat to server: {}", server);
+                peers.update(peer);
+            } catch (Exception ignore) {
+                LOG.error("error while send beat to server: {}", server);
             }
         }
     }

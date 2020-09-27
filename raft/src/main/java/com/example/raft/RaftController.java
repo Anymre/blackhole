@@ -21,4 +21,9 @@ public class RaftController {
     public RaftPeer vote(@RequestBody RaftPeer vote) {
         return raftCore.receivedVote(vote);
     }
+    
+    @PostMapping("/beat")
+    public RaftPeer beat(@RequestBody RaftPeer beat) {
+        return raftCore.receivedBeat(beat);
+    }
 }
