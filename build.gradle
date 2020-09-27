@@ -9,13 +9,6 @@ allprojects {
     version = '1.0.0'
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.boot:spring-boot-starter-parent:2.3.2.RELEASE"
-            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:2.2.1.RELEASE"
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3"
-        }
-    }
 }
 
 subprojects {
@@ -25,8 +18,15 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     repositories { maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' } }
 
-    jar.enabled = true
-    bootJar.enabled = false
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:2.3.2.RELEASE"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:2.2.1.RELEASE"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR3"
+        }
+    }
+
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
         testImplementation('org.springframework.boot:spring-boot-starter-test') {

@@ -6,9 +6,7 @@ bootJar {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.alibaba.nacos:nacos-client:1.4.0-SNAPSHOT'
-    implementation 'com.alibaba.boot:nacos-config-spring-boot-starter:0.2.7'
-//    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config:2.2.1.RELEASE'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
 }
 
 test {
