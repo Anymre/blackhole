@@ -1,4 +1,8 @@
-# blackhole
+# Blackhole
 
 
-## 学习黑洞
+`Some unexpected ideas`
+
+
+#### 1. Raft protocol
+
