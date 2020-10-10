@@ -143,7 +143,7 @@ public class RaftPeerSet {
             }
         }
         
-        if (maxApproveCount > peers.size() / 2 + 1) {
+        if (maxApproveCount >= peers.size() / 2 + 1) {
             RaftPeer peer = peers.get(maxApprovePeer);
             peer.state = RaftPeer.State.LEADER;
             if (!peer.equals(leader)) {
