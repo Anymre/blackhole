@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Executor;
@@ -35,18 +36,32 @@ public class SimpleHttpServer implements CommandLineRunner {
         }
     }
     
-    private void handleSocket(Socket connection) {
+    private void handleSocket(Socket socket) {
         try {
-            BufferedReader is = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("get message from client: " + is.readLine());
-            PrintWriter out=new PrintWriter(connection.getOutputStream(),true);
-            out.println("HTTP/hello world");
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            
+            String content = "hello world\n";
+            out.println(header(content));
+            out.println(content);
+            
             is.close();
             out.close();
-            connection.close();
+            socket.close();
             
             Thread.sleep(1000L);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+    
+    public String header(String content) {
+        String header =
+                "HTTP/1.0 200 OK\r\n" + "Server: OneFile 1.0\r\n" + "Content-length: " + content.length() + "\r\n"
+                        + "Content-type: text/html\r\n\r\n";
+        return header;
+        
+    }
+    
 }
