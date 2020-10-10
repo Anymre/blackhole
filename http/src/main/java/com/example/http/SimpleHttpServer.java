@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Executor;
@@ -38,11 +39,13 @@ public class SimpleHttpServer implements CommandLineRunner {
         try {
             BufferedReader is = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             System.out.println("get message from client: " + is.readLine());
-            OutputStream outputStream = connection.getOutputStream();
-            outputStream.write("hello world!".getBytes());
-            outputStream.close();
+            PrintWriter out=new PrintWriter(connection.getOutputStream(),true);
+            out.println("HTTP/hello world");
             is.close();
+            out.close();
             connection.close();
+            
+            Thread.sleep(1000L);
         } catch (Exception ignore) {
         }
     }
