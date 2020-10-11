@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Component
 public class SimpleHttpServer implements CommandLineRunner {
     
-    private static final Executor exec = Executors.newFixedThreadPool(8);
+    private static final Executor exec = Executors.newFixedThreadPool(2);
     
     @Override
     public void run(String... args) throws Exception {
@@ -39,7 +39,18 @@ public class SimpleHttpServer implements CommandLineRunner {
     private void handleSocket(Socket socket) {
         try {
             BufferedReader is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("get message from client: " + is.readLine());
+            System.out.println("get message from client: ");
+            StringBuilder builder = new StringBuilder();
+            while (true){
+                String s = is.readLine();
+                if(s.equals("") || s == null){
+                    break;
+                }
+                builder.append(s).append("\n");
+            }
+            System.out.println(builder.toString());
+
+            
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             
             String content = "hello world\n";
