@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @author Marcus lv
  * @date 2020/10/10 13:41
  */
-@Component
+//@Component
 public class SimpleHttpServer implements CommandLineRunner {
     
     private static final Executor exec = Executors.newFixedThreadPool(2);
@@ -41,15 +41,14 @@ public class SimpleHttpServer implements CommandLineRunner {
             BufferedReader is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("get message from client: ");
             StringBuilder builder = new StringBuilder();
-            while (true){
+            while (true) {
                 String s = is.readLine();
-                if(s.equals("") || s == null){
+                if (s == null || "".equals(s)) {
                     break;
                 }
                 builder.append(s).append("\n");
             }
             System.out.println(builder.toString());
-
             
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             
@@ -61,7 +60,6 @@ public class SimpleHttpServer implements CommandLineRunner {
             out.close();
             socket.close();
             
-            Thread.sleep(1000L);
         } catch (Exception e) {
             e.printStackTrace();
         }
