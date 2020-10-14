@@ -21,19 +21,28 @@ import java.util.stream.Collectors;
  * @author Marcus lv
  * @date 2020/10/10 13:41
  */
-//@Component
+@Component
 public class SimpleHttpServer implements CommandLineRunner {
     
-    private static final Executor exec = Executors.newFixedThreadPool(2);
+    private static final Executor exec = Executors.newFixedThreadPool(200);
     
     @Override
     public void run(String... args) throws Exception {
+        System.out.println(this.getClass().getName()+" start");
         ServerSocket serverSocket = new ServerSocket(80);
-        while (true) {
-            Socket connection = serverSocket.accept();
-            Runnable runnable = () -> handleSocket(connection);
-            exec.execute(runnable);
-        }
+        Runnable tomcat = () -> {
+            while (true) {
+                Socket connection = null;
+                try {
+                    connection = serverSocket.accept();
+                    Socket finalConnection = connection;
+                    Runnable runnable = () -> handleSocket(finalConnection);
+                    exec.execute(runnable);
+                } catch (Exception ignore) {
+                }
+            }
+        };
+        exec.execute(tomcat);
     }
     
     private void handleSocket(Socket socket) {
