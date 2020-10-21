@@ -1,4 +1,4 @@
-package com.example.http.netty;
+package com.example.http.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 
-public class DiscardServer implements CommandLineRunner {
+public class NettyServer implements CommandLineRunner {
     
     @Override
     public void run(String... args) throws Exception {
@@ -27,15 +27,13 @@ public class DiscardServer implements CommandLineRunner {
         
         try {
             ServerBootstrap b = new ServerBootstrap(); // (2)
-            b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class) // (3)
+            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class) // (3)
                     .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new DiscardServerHandler());
+                            ch.pipeline().addLast(new TimeEncoder(), new TimeServerHandler());
                         }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+                    }).option(ChannelOption.SO_BACKLOG, 128)          // (5)
                     .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
             
             // Bind and start to accept incoming connections.
