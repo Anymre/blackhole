@@ -36,6 +36,15 @@ class HttpApplicationTests {
         System.out.println(System.nanoTime() - s);
     }
     
+    @Test
+    void netty() throws Exception {
+        long s = System.nanoTime();
+        for (int i = 0; i < 500; i++) {
+            new Thread(() -> send(8080)).start();
+        }
+        System.out.println(System.nanoTime() - s);
+    }
+    
     private void send(int port) {
         try {
             Socket socket = new Socket("127.0.0.1", port);
