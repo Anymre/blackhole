@@ -39,7 +39,7 @@ public class HttpHelloWorldServer implements CommandLineRunner {
         } else {
             sslCtx = null;
         }
-    
+        
         // Configure the server.
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -59,12 +59,12 @@ public class HttpHelloWorldServer implements CommandLineRunner {
                     p.addLast(new HttpHelloWorldServerHandler());
                 }
             });
-        
+            
             Channel ch = b.bind(PORT).sync().channel();
-        
+            
             System.err.println(
                     "Open your web browser and navigate to " + (SSL ? "https" : "http") + "://127.0.0.1:" + PORT + '/');
-        
+            
             ch.closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();

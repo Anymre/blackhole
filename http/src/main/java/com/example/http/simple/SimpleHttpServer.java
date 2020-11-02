@@ -1,4 +1,4 @@
-package com.example.http;
+package com.example.http.simple;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
