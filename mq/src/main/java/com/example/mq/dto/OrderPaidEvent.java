@@ -1,5 +1,5 @@
 
-package com.example.mq;
+package com.example.mq.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

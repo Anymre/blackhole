@@ -1,6 +1,6 @@
 
 
-package com.example.mq;
+package com.example.mq.dto;
 
 public class User {
     private String userName;
