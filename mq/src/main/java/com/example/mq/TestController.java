@@ -1,7 +1,6 @@
 package com.example.mq;
 
 
-import com.example.mq.dto.User;
 import org.apache.rocketmq.client.producer.TransactionSendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
     @Autowired
-    RocketMQTemplate rocketmqtemplate;
+    ExtRocketMqTemplate extRocketMqTemplate;
+    @Autowired
+    RocketMQTemplate rocketMQTemplate;
 
     @GetMapping
     public String echo() {
         Message<String> helloWorld = MessageBuilder.withPayload("hello world").build();
-        TransactionSendResult transactionSendResult = rocketmqtemplate.sendMessageInTransaction("test_topic", helloWorld, null);
+        TransactionSendResult transactionSendResult = extRocketMqTemplate.sendMessageInTransaction("test_topic", helloWorld, null);
+        System.out.println(transactionSendResult.toString());
+        try {
+            transactionSendResult = rocketMQTemplate.sendMessageInTransaction("test_topic", helloWorld, null);
+            System.out.println(transactionSendResult.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return transactionSendResult.toString();
+
     }
 }
