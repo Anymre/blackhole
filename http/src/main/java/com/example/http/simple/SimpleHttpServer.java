@@ -1,5 +1,6 @@
 package com.example.http.simple;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +24,16 @@ import java.util.stream.Collectors;
  */
 @Component
 public class SimpleHttpServer implements CommandLineRunner {
-    
+
     private static final Executor exec = Executors.newFixedThreadPool(200);
-    
+
+    @Value("${simple.port}")
+    private int port;
+
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(this.getClass().getName()+" start");
-        ServerSocket serverSocket = new ServerSocket(80);
+        System.out.println(this.getClass().getName() + " start");
+        ServerSocket serverSocket = new ServerSocket(port);
         Runnable tomcat = () -> {
             while (true) {
                 Socket connection = null;
@@ -44,7 +48,7 @@ public class SimpleHttpServer implements CommandLineRunner {
         };
         exec.execute(tomcat);
     }
-    
+
     private void handleSocket(Socket socket) {
         try {
             BufferedReader is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -58,28 +62,26 @@ public class SimpleHttpServer implements CommandLineRunner {
                 builder.append(s).append("\n");
             }
             System.out.println(builder.toString());
-            
+
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            
+
             String content = "hello world\n";
             out.println(header(content));
             out.println(content);
-            
+
             is.close();
             out.close();
             socket.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public String header(String content) {
-        String header =
-                "HTTP/1.0 200 OK\r\n" + "Server: OneFile 1.0\r\n" + "Content-length: " + content.length() + "\r\n"
-                        + "Content-type: text/html\r\n\r\n";
-        return header;
-        
+        return "HTTP/1.0 200 OK\r\n" + "Server: OneFile 1.0\r\n" + "Content-length: " + content.length() + "\r\n"
+                + "Content-type: text/html\r\n\r\n";
+
     }
-    
+
 }
