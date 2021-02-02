@@ -23,7 +23,6 @@ dependencies {
     implementation 'com.alibaba.cloud:spring-cloud-starter-stream-rocketmq'
     implementation 'com.aliyun:cola-common:3.0.0'
     implementation 'com.aliyun:cola-core:3.0.0'
-    implementation 'com.vaadin:vaadin-spring-boot-starter'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.taobao.arthas:arthas-spring-boot-starter:3.4.3'
