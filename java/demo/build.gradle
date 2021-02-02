@@ -13,17 +13,11 @@ configurations {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-seata'
     implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
-    implementation 'com.alibaba.cloud:spring-cloud-starter-dubbo'
-    implementation 'com.alibaba.cloud:spring-cloud-starter-stream-rocketmq'
-    implementation 'com.aliyun:cola-common:3.0.0'
-    implementation 'com.aliyun:cola-core:3.0.0'
-    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.taobao.arthas:arthas-spring-boot-starter:3.4.3'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

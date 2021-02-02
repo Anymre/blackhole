@@ -3,11 +3,10 @@ package com.example.demo;
 import io.seata.spring.boot.autoconfigure.SeataAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication(exclude = SeataAutoConfiguration.class)
-@EnableBinding(value = {Sink.class})
+@EnableDiscoveryClient
 public class DemoApplication {
 
     public static void main(String[] args) {
