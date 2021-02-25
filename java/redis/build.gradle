@@ -1,3 +1,4 @@
 dependencies {
 	implementation 'io.netty:netty-all:4.1.53.Final'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.14.1'
 }

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: demo
+  cloud:
+    nacos:
+      config:
+        server-addr: server.anymre.top:8848
+        file-extension: yml
+      discovery:
+        server-addr: server.anymre.top:8848

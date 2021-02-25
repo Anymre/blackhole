@@ -1,0 +1,17 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-seata'
+    implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'mysql:mysql-connector-java:8.0.23'
+    implementation 'org.projectlombok:lombok:1.18.18'
+    implementation 'com.github.xiaoymin:knife4j-spring-boot-starter:2.0.4'
+    implementation 'javax.validation:validation-api'
+    implementation 'org.hibernate:hibernate-validator:5.2.4.Final'
+
+
+    runtimeOnly 'com.taobao.arthas:arthas-spring-boot-starter:3.4.3'
+}
