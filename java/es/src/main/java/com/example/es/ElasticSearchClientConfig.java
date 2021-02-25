@@ -17,10 +17,10 @@ public class ElasticSearchClientConfig {
     @Bean
     public RestHighLevelClient restHighLevelClient() {
 //        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-//        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("elastic", "Ch@mp!on@"));
+//        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("", ""));
 //
         RestClientBuilder http = RestClient
-                .builder(new HttpHost("server.anymre.top", 9200, "http"));
+                .builder(new HttpHost("127.0.0.1", 9200, "http"));
 //        http.setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
         
         RestHighLevelClient client = new RestHighLevelClient(http);
