@@ -1,20 +1,29 @@
-package main
+package proto
 
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/ptypes"
 	"io/ioutil"
 	pb "protocol-buffers/proto/pb"
 	"testing"
 )
 
 func TestWriteFile(t *testing.T) {
-	p0 := &pb.Person{Id: 1234,
-		Name: "John Doe",
+	any, _ := ptypes.MarshalAny(&pb.Person{Id: 1234})
+
+	p0 := &pb.Person{
+		Name:  "John Doe",
+		Id:    1234,
+		Email: "",
 		//Email: "jdoe@example.com",
 		Phones: []*pb.Person_PhoneNumber{
 			{Number: "555-4321", Type: pb.Person_HOME},
-		}}
+		},
+		LastUpdated: nil,
+		Detail:      any,
+		OneOf:       &pb.Person_A{A: "a"},
+	}
 
 	book := &pb.AddressBook{People: []*pb.Person{p0}}
 

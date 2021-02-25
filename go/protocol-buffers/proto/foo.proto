@@ -1,12 +1,13 @@
 syntax = "proto3";
 package tutorial;
-option go_package = "pb;proto";
+option go_package = "protocol-buffers/proto/pb";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
 
 message Person {
   string name = 1;
-  int32 id = 2;  // Unique ID number for this person.
+  int32 id = 2;  // Unique ID number for this person.`
   string email = 3;
 
 
@@ -24,9 +25,19 @@ message Person {
   repeated PhoneNumber phones = 4;
 
   google.protobuf.Timestamp last_updated = 5;
+  google.protobuf.Any detail = 6;
+
+  oneof oneOf {
+    string a = 7;
+    string b = 8;
+  }
 }
 
 // Our address book file is just one of these.
 message AddressBook {
   repeated Person people = 1;
+}
+
+service FooService {
+  rpc GetSomething(AddressBook) returns (AddressBook);
 }
